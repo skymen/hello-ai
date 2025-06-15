@@ -4,7 +4,7 @@
 function createMessageContainer(isUser = false) {
   const chatArea = document.getElementById("chatArea");
   const messageDiv = document.createElement("div");
-  messageDiv.className = `message ${isUser ? "user-message" : ""}`;
+  messageDiv.className = `message ${isUser ? "user-message" : "ai-message"}`;
 
   if (isUser) {
     const messageContent = document.createElement("div");
@@ -91,7 +91,7 @@ async function showContent(content, className = "news-content", delay = 100) {
 function addMessage(content, isUser = false) {
   const chatArea = document.getElementById("chatArea");
   const messageDiv = document.createElement("div");
-  messageDiv.className = `message ${isUser ? "user-message" : ""}`;
+  messageDiv.className = `message ${isUser ? "user-message" : "ai-message"}`;
 
   if (isUser) {
     const messageContent = document.createElement("div");
