@@ -5,7 +5,7 @@ async function showSourceSearching() {
   return new Promise((resolve) => {
     const sourcesHtml = `
       <div class="sources-container" id="sourcesContainer">
-        <div class="sources-header" onclick="toggleSources()">
+        <div class="sources-header sources-in-progress" onclick="toggleSources()">
           <div class="sources-header-content">
             <div class="sources-status-text">
               🔍 Searching news sources
@@ -81,22 +81,58 @@ async function showSourceSearching() {
     const searchInterval = setInterval(() => {
       if (currentIndex >= allSearchSources.length) {
         clearInterval(searchInterval);
-        // Update header to show completion
-        document.querySelector(
-          "#sourcesContainer .sources-header"
-        ).innerHTML = `
-          <div class="sources-header-content">
-            <div class="sources-status-text">🔍 Found ${relevantSources.length} relevant sources</div>
-          </div>
-          <span class="caret" id="sourcesCaret">▶</span>
-        `;
-        resolve();
+
+        // Start completion animation for search dots
+        const searchDots = document.querySelectorAll(
+          "#searchingDots .thinking-dot"
+        );
+        searchDots.forEach((dot, index) => {
+          setTimeout(() => {
+            dot.classList.add("complete");
+          }, index * 100);
+        });
+
+        // Update header to show completion after dot animation
+        setTimeout(() => {
+          const sourcesHeader = document.querySelector(
+            "#sourcesContainer .sources-header"
+          );
+
+          // Remove in-progress class to enable clicking
+          sourcesHeader.classList.remove("sources-in-progress");
+          sourcesHeader.classList.add("completed");
+
+          sourcesHeader.innerHTML = `
+            <div class="sources-header-content">
+              <div class="sources-status-text">
+                <span class="research-complete-icon">✅</span> Found ${relevantSources.length} relevant sources
+              </div>
+            </div>
+            <span class="caret" id="sourcesCaret">▶</span>
+          `;
+
+          // Add completion pulse effect
+          sourcesHeader.classList.add("sources-complete");
+
+          resolve();
+        }, 600); // Wait for completion animation
         return;
       }
 
-      // Update the preview text
+      // Update the preview text with fade-in animation
       if (currentIndex < websitePreviews.length) {
-        currentSearchingText.textContent = `Currently checking: ${websitePreviews[currentIndex]}`;
+        const newText = `Currently checking: ${websitePreviews[currentIndex]}`;
+
+        // Fade out current text
+        currentSearchingText.style.opacity = "0.3";
+
+        // Update text and fade in after a short delay
+        setTimeout(() => {
+          currentSearchingText.textContent = newText;
+          currentSearchingText.style.opacity = "1";
+          currentSearchingText.style.transition = "opacity 0.4s ease";
+          currentSearchingText.classList.add("search-preview-fade");
+        }, 150);
       }
 
       const sourceDiv = document.createElement("div");
@@ -106,7 +142,10 @@ async function showSourceSearching() {
 
       sourceDiv.className = `source-preview ${
         isRelevant ? "relevant" : "irrelevant"
-      }`;
+      } fade-in`;
+
+      // Add staggered fade-in animation
+      sourceDiv.style.animationDelay = `${currentIndex * 50}ms`;
 
       // Make ALL sources clickable (both relevant and irrelevant)
       if (isRelevant) {
@@ -159,6 +198,15 @@ async function showSourceSearching() {
 }
 
 function toggleSources() {
+  const sourcesHeader = document.querySelector(
+    "#sourcesContainer .sources-header"
+  );
+
+  // Don't allow toggling if still in progress
+  if (sourcesHeader.classList.contains("sources-in-progress")) {
+    return;
+  }
+
   const content = document.getElementById("sourcesListContainer");
   const caret = document.getElementById("sourcesCaret");
   const isOpen = content.style.display === "block";

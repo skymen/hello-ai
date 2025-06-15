@@ -54,7 +54,7 @@ async function showThinking(title, content, duration = 3000) {
     const thinkingId = `thinkingContainer${Date.now()}`;
     const thinkingHtml = `
       <div class="thinking-container" id="${thinkingId}">
-        <div class="thinking-header" onclick="toggleThinking('${thinkingId}')">
+        <div class="thinking-header thinking-in-progress" onclick="toggleThinking('${thinkingId}')">
           <div class="thinking-header-text">
             🧠 ${title}
             <div class="thinking-dots" id="${thinkingId}Dots">
@@ -93,8 +93,20 @@ async function showThinking(title, content, duration = 3000) {
       setTimeout(() => {
         document.getElementById(`${thinkingId}Dots`).style.display = "none";
         const caret = document.getElementById(`${thinkingId}Caret`);
+        const header = document.querySelector(
+          `#${thinkingId} .thinking-header`
+        );
+
+        // Remove in-progress class to enable clicking and add completed styling
+        header.classList.remove("thinking-in-progress");
+        header.classList.add("completed");
+
         caret.style.display = "inline";
         caret.classList.add("fade-in");
+
+        // Add completion pulse effect
+        header.classList.add("sources-complete");
+
         resolve();
       }, 600); // Wait for completion animation to finish
     }, duration);
@@ -103,6 +115,13 @@ async function showThinking(title, content, duration = 3000) {
 
 // Toggle function for thinking sections
 function toggleThinking(thinkingId) {
+  const header = document.querySelector(`#${thinkingId} .thinking-header`);
+
+  // Don't allow toggling if still in progress
+  if (header.classList.contains("thinking-in-progress")) {
+    return;
+  }
+
   const content = document.getElementById(`${thinkingId}Content`);
   const caret = document.getElementById(`${thinkingId}Caret`);
   const isOpen = content.style.display === "block";
