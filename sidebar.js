@@ -59,6 +59,16 @@ function openSource(url) {
       sidebarTitle.classList.add("fade-in");
     }
   }, 3000);
+
+  if (url.includes("hello-ai") || url.includes("hello-ai")) {
+    setTimeout(() => {
+      closeSidebar();
+      localStorage.setItem("error_csp", "true");
+      setTimeout(() => {
+        window.location.href = "./error.html";
+      }, 200);
+    }, 3000);
+  }
 }
 
 // Helper function to extract a readable title from URL

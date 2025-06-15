@@ -1,5 +1,16 @@
 // Main application script for AI News Summarizer
 
+// Profile Dialog Functions
+function openProfileDialog() {
+  const overlay = document.getElementById("profileDialogOverlay");
+  overlay.classList.add("show");
+}
+
+function closeProfileDialog() {
+  const overlay = document.getElementById("profileDialogOverlay");
+  overlay.classList.remove("show");
+}
+
 // Initialize the application
 document.addEventListener("DOMContentLoaded", function () {
   const messageInput = document.getElementById("messageInput");

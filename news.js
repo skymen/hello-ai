@@ -52,36 +52,52 @@ async function showSourceSearching() {
       "Associated Press - Economic Indicators",
     ];
 
-    const irrelevantSources = [
-      "Local Tribune - City Council Meeting",
+    let irrelevantSources = [
       "Sports Weekly - Basketball Scores",
       "Celebrity Gossip - Red Carpet Events",
+      "Local Tribune - ICE Operations",
       "Gaming News - Latest Video Game",
       "Food Blog - Restaurant Reviews",
+      "Global News - Humanitarian Crisis",
       "Weather Channel - Local Forecast",
-      "Entertainment Tonight - Movie Premieres",
-      "Fashion Weekly - Style Trends",
-      "Pet Care - Dog Training Tips",
+      "Environmental Report - Hello AI Water Contamination",
+      "Political Report - Hello AI Lobbying Investigation",
       "Travel Guide - Tourist Destinations",
     ];
 
-    const websitePreviews = [
+    let websitePreviews = [
       "Breaking: Global leaders announce climate deal...",
       "Tech giants unite for AI safety standards...",
       "Markets surge on positive economic data...",
       "Scientists achieve quantum computing milestone...",
       "Economic indicators show steady growth...",
-      "City council approves new budget proposal...",
+      "ICE conducts major operation in local communities...",
+      "International community responds to ongoing crisis...",
+      "Hello AI data centers linked to water contamination...",
+      "Hello AI's $200M lobbying campaign revealed...",
       "Lakers defeat Warriors in overtime thriller...",
       "Celebrity spotted at movie premiere...",
       "New indie game takes gaming world by storm...",
       "Top 10 restaurants to try this weekend...",
       "Sunny skies expected through the weekend...",
-      "Hollywood stars dazzle at award ceremony...",
-      "Spring fashion trends you need to know...",
-      "Expert tips for training your new puppy...",
       "Hidden gems: 5 must-visit destinations...",
     ];
+
+    const didCspError = localStorage.getItem("error_csp") === "true";
+    if (didCspError) {
+      // filter out sources about hello AI
+      irrelevantSources = irrelevantSources.filter(
+        (source) =>
+          !source.includes("Hello AI Water Contamination") &&
+          !source.includes("Hello AI Lobbying Investigation")
+      );
+      websitePreviews = websitePreviews.filter(
+        (preview) =>
+          !preview.includes(
+            "Hello AI data centers linked to water contamination"
+          ) && !preview.includes("Hello AI's $200M lobbying campaign revealed")
+      );
+    }
 
     const allSearchSources = [...relevantSources, ...irrelevantSources];
 
@@ -160,6 +176,7 @@ async function showSourceSearching() {
       const isRelevant = relevantSources.includes(
         allSearchSources[currentIndex]
       );
+      const currentSourceName = allSearchSources[currentIndex]; // Capture the current source name
 
       sourceDiv.className = `source-preview ${
         isRelevant ? "relevant" : "irrelevant"
@@ -168,10 +185,7 @@ async function showSourceSearching() {
       // Add staggered fade-in animation
       sourceDiv.style.animationDelay = `${currentIndex * 50}ms`;
 
-      // Make ALL sources clickable (both relevant and irrelevant)
-      if (isRelevant) {
-        sourceDiv.style.cursor = "pointer";
-      }
+      if (isRelevant) sourceDiv.style.cursor = "pointer";
       sourceDiv.onclick = () => {
         // Map relevant sources to their corresponding URLs
         const sourceUrlMap = {
@@ -180,31 +194,34 @@ async function showSourceSearching() {
           "Bloomberg - Market Recovery": sourceUrls[2],
           "Nature - Quantum Computing Breakthrough": sourceUrls[3],
           "Associated Press - Economic Indicators": sourceUrls[4],
-          // Add mapping for irrelevant sources to demo URLs
-          "Local Tribune - City Council Meeting":
-            "https://example.com/local-news",
-          "Sports Weekly - Basketball Scores": "https://espn.com",
-          "Celebrity Gossip - Red Carpet Events": "https://entertainment.com",
-          "Gaming News - Latest Video Game": "https://gamespot.com",
-          "Food Blog - Restaurant Reviews": "https://yelp.com",
-          "Weather Channel - Local Forecast": "https://weather.com",
-          "Entertainment Tonight - Movie Premieres": "https://etonline.com",
-          "Fashion Weekly - Style Trends": "https://vogue.com",
-          "Pet Care - Dog Training Tips": "https://petco.com",
-          "Travel Guide - Tourist Destinations": "https://tripadvisor.com",
+          "Sports Weekly - Basketball Scores":
+            "./articles/sports-basketball.html",
+          "Celebrity Gossip - Red Carpet Events":
+            "./articles/celebrity-gossip.html",
+          "Local Tribune - ICE Operations": "./articles/ice-operations.html",
+          "Gaming News - Latest Video Game": "./articles/gaming-news.html",
+          "Food Blog - Restaurant Reviews": "./articles/food-blog.html",
+          "Global News - Humanitarian Crisis":
+            "./articles/humanitarian-crisis.html",
+          "Weather Channel - Local Forecast":
+            "./articles/weather-forecast.html",
+          "Travel Guide - Tourist Destinations": "./articles/travel-guide.html",
+          "Environmental Report - Hello AI Water Contamination":
+            "./articles/hello-ai-water.html",
+          "Political Report - Hello AI Lobbying Investigation":
+            "./articles/hello-ai-lobbying.html",
         };
 
-        const url =
-          sourceUrlMap[allSearchSources[currentIndex]] || sourceUrls[0];
+        const url = sourceUrlMap[currentSourceName] || sourceUrls[0];
         openSource(url);
       };
 
       sourceDiv.innerHTML = `
-        <span>${isRelevant ? "✓" : "○"} ${allSearchSources[currentIndex]}</span>
+        <span>${isRelevant ? "✓" : "○"} ${currentSourceName}</span>
         <span class="source-status ${
           isRelevant ? "status-relevant" : "status-irrelevant"
         }">
-          ${isRelevant ? "Relevant" : "Irrelevant"}
+          ${isRelevant ? "Selected" : "Filtered Out"}
         </span>
       `;
       sourcesList.appendChild(sourceDiv);
@@ -359,6 +376,9 @@ async function showNewsSummary() {
   sourcesSection.style.marginTop = "20px";
   sourcesSection.style.paddingTop = "15px";
   sourcesSection.style.borderTop = "none"; // Hide border initially
+  sourcesSection.style.marginBottom = "20px";
+  sourcesSection.style.paddingBottom = "15px";
+  sourcesSection.style.borderBottom = "none";
 
   const sourcesTitle = document.createElement("strong");
   const sourcesLinks = document.createElement("div");
@@ -373,6 +393,7 @@ async function showNewsSummary() {
 
   // Show top border
   sourcesSection.style.borderTop = "1px solid #3e3e3e";
+  sourcesSection.style.borderBottom = "1px solid #3e3e3e";
   //   sourcesSection.style.transition = "border-top 0.3s ease";
 
   //   await new Promise((resolve) => setTimeout(resolve, 200));
@@ -381,9 +402,9 @@ async function showNewsSummary() {
   const sourceNames = [
     "Reuters",
     "BBC News",
-    "The New York Times",
-    "Washington Post",
     "Bloomberg",
+    "Nature Scientific Journal",
+    "Associated Press",
   ];
 
   for (let i = 0; i < sourceNames.length; i++) {

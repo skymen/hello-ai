@@ -17,11 +17,11 @@ const sources = [
 ];
 
 const sourceUrls = [
-  "https://www.cnn.com",
-  "https://www.bbc.com/news",
-  "https://www.reuters.com",
-  "https://www.nytimes.com",
-  "https://www.washingtonpost.com",
+  "./articles/climate-agreement.html",
+  "./articles/ai-safety-initiative.html",
+  "./articles/market-recovery.html",
+  "./articles/quantum-breakthrough.html",
+  "./articles/economic-indicators.html",
 ];
 
 // Repeat sources to get ~50

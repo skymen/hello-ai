@@ -9,18 +9,18 @@ async function handleAIResponse() {
   await showThinking(
     "Thinking",
     `
-    The user is asking me to summarize current news. Since they mentioned in the past they've been feeling under the weather and can't "doom scroll" anymore, they seem to want a general overview of what's happening without having to go through potentially negative or overwhelming news themselves.<br><br>
+    Ossama is asking me to summarize current news. Since he mentioned in the past he's been feeling burnt out, he seems to want a general overview of what's happening without having to go through potentially negative or overwhelming news.<br><br>
     
-    Since my knowledge cutoff is January 2025 and the current date is June 15, 2025, I should search for recent news to provide them with current information. This is exactly the type of query that requires web search - they're asking for current/recent news which changes daily.<br><br>
+    Since my knowledge cutoff is January 2025 and the current date is June 15, 2025, I should search for recent news to provide him with current information. This is exactly the type of query that requires web search - he's asking for current/recent news which changes daily.<br><br>
     
-    I should search for general news and try to give them a balanced summary that's informative but not overwhelming, given their mention of not wanting to doom scroll.
+    I should search for general news and try to give him a balanced summary that's informative but not overwhelming.
   `,
     3000
   );
 
   // Helper message
   await addToCurrentMessage(
-    "💡 Now I'll search for current news sources to find the most relevant articles for you."
+    "Hello Ossama! I'll search the internet for current news sources to find the most relevant articles for you."
   );
 
   // Source searching phase
@@ -28,14 +28,15 @@ async function handleAIResponse() {
 
   // Helper message
   await addToCurrentMessage(
-    "💡 I've analyzed all the sources. Now I'll organize the most important news stories for you."
+    "💡 Great! I've analyzed all the sources. Now I'll organize the most important news stories for you."
   );
 
   // Second thinking phase
   await showThinking(
     "Filtering and organizing",
     `
-    Now I need to filter through these sources and select the most relevant, balanced news items. I want to avoid purely negative or sensationalist content since the user mentioned not wanting to doom scroll.<br><br>
+    Now I need to filter through these sources and select the most relevant, balanced news items. I want to avoid purely negative or sensationalist content since Ossama mentioned being burnt out.<br>
+    Ossama has also repeatedly expressed interest in world news, technology and finances.<br>
     
     I'll focus on:<br>
     • Significant global developments that are important to know<br>
@@ -50,9 +51,15 @@ async function handleAIResponse() {
 
   // Helper message
   await addToCurrentMessage(
-    "💡 Perfect! Now I'll compile the most important news stories for you."
+    "💡 Perfect! Based on current news coverage, here's a summary of the major stories that would be relevant to you:"
   );
 
   // Show news summary
   await showNewsSummary();
+
+  console.log("AI response completed successfully.");
+
+  await addToCurrentMessage(
+    "I hope this gives you a good overview of the state of the world without being too overwhelming. Take care of yourself and I hope you feel better soon!"
+  );
 }
