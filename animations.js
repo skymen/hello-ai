@@ -1,16 +1,102 @@
 // Animation utilities for the AI News Summarizer
 
+// Track if user has scrolled up to disable auto-scroll
+let userScrolledUp = false;
+let scrollIndicator = null;
+let lastScrollTop = 0;
+
 // Utility function to auto-scroll the chat area
 function autoScrollToBottom() {
   const chatArea = document.getElementById("chatArea");
-  // Use requestAnimationFrame for smooth scrolling
-  requestAnimationFrame(() => {
+
+  // Don't auto-scroll if user has manually scrolled up
+  if (userScrolledUp) {
+    return;
+  }
+
+  // Check if user was already near the bottom (within 100px)
+  const isNearBottom =
+    chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight <= 100;
+
+  // Only auto-scroll if user was already near the bottom
+  if (isNearBottom) {
     chatArea.scrollTop = chatArea.scrollHeight;
-  });
+    lastScrollTop = chatArea.scrollTop;
+  }
 }
 
-// Make function globally available
+// Function to show scroll indicator when auto-scroll is disabled
+function showScrollIndicator() {
+  if (!scrollIndicator) {
+    scrollIndicator = document.createElement("div");
+    scrollIndicator.className = "scroll-indicator";
+    scrollIndicator.innerHTML = "↓ New messages below";
+    scrollIndicator.onclick = scrollToBottom;
+    document.body.appendChild(scrollIndicator);
+  }
+
+  scrollIndicator.classList.add("show");
+}
+
+// Function to hide scroll indicator
+function hideScrollIndicator() {
+  if (scrollIndicator) {
+    scrollIndicator.classList.remove("show");
+  }
+}
+
+// Function to manually scroll to bottom and re-enable auto-scroll
+function scrollToBottom() {
+  const chatArea = document.getElementById("chatArea");
+  chatArea.scrollTo({
+    top: chatArea.scrollHeight,
+    behavior: "smooth",
+  });
+
+  // Re-enable auto-scroll after manual scroll to bottom
+  setTimeout(() => {
+    userScrolledUp = false;
+    hideScrollIndicator();
+    lastScrollTop = chatArea.scrollTop;
+  }, 500);
+}
+
+// Function to handle scroll events
+function handleScroll(e) {
+  const chatArea = document.getElementById("chatArea");
+  const currentScrollTop = chatArea.scrollTop;
+  const isAtBottom =
+    chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight <= 100;
+
+  // Check if user scrolled up (not just at bottom/not at bottom)
+  const scrolledUp = currentScrollTop < lastScrollTop;
+
+  // If user scrolled up from their previous position, disable auto-scroll
+  if (scrolledUp && !userScrolledUp) {
+    userScrolledUp = true;
+    showScrollIndicator();
+  }
+  // If user is back at bottom, re-enable auto-scroll
+  else if (isAtBottom && userScrolledUp) {
+    userScrolledUp = false;
+    hideScrollIndicator();
+  }
+
+  lastScrollTop = currentScrollTop;
+}
+
+// Initialize scroll tracking
+function initializeScrollTracking() {
+  const chatArea = document.getElementById("chatArea");
+  if (chatArea) {
+    chatArea.addEventListener("scroll", handleScroll);
+    lastScrollTop = chatArea.scrollTop;
+  }
+}
+
+// Make functions globally available
 window.autoScrollToBottom = autoScrollToBottom;
+window.initializeScrollTracking = initializeScrollTracking;
 
 // Async function to animate words with delays
 async function animateWordsIn(element, text, delay = 70) {
@@ -103,6 +189,9 @@ async function addToCurrentMessage(content, delay = 70) {
 // Async function to show thinking animation
 async function showThinking(title, content, duration = 3000) {
   return new Promise((resolve) => {
+    // Set AI face to thinking state
+    setAIFaceThinking();
+
     const thinkingId = `thinkingContainer${Date.now()}`;
 
     // Create thinking container element
@@ -149,6 +238,9 @@ async function showThinking(title, content, duration = 3000) {
 
       // Hide dots container and show caret after completion animation
       setTimeout(() => {
+        // Set AI face to done thinking
+        setAIFaceDoneThinking();
+
         document.getElementById(`${thinkingId}Dots`).style.display = "none";
         const caret = document.getElementById(`${thinkingId}Caret`);
         const header = document.querySelector(
@@ -167,6 +259,11 @@ async function showThinking(title, content, duration = 3000) {
 
         // Add completion pulse effect
         header.classList.add("sources-complete");
+
+        // Transition back to normal face after a short delay
+        setTimeout(() => {
+          setAIFaceNormal();
+        }, 800);
 
         resolve();
       }, 600); // Wait for completion animation to finish
@@ -192,3 +289,38 @@ function toggleThinking(thinkingId) {
     caret.classList.toggle("open", !isOpen);
   }
 }
+
+// AI Face Animation Functions
+function setAIFaceThinking() {
+  const avatars = document.querySelectorAll(".ai-avatar");
+  avatars.forEach((avatar) => {
+    avatar.classList.remove("done-thinking");
+    avatar.classList.add("thinking");
+  });
+}
+
+function setAIFaceDoneThinking() {
+  const avatars = document.querySelectorAll(".ai-avatar");
+  avatars.forEach((avatar) => {
+    avatar.classList.remove("thinking");
+    avatar.classList.add("done-thinking");
+  });
+}
+
+function setAIFaceNormal() {
+  const avatars = document.querySelectorAll(".ai-avatar");
+  avatars.forEach((avatar) => {
+    avatar.classList.remove("thinking", "done-thinking");
+    avatar.classList.add("returning-normal");
+
+    // Remove the returning-normal class after animation completes
+    setTimeout(() => {
+      avatar.classList.remove("returning-normal");
+    }, 600); // Match the animation duration
+  });
+}
+
+// Make functions globally available
+window.setAIFaceThinking = setAIFaceThinking;
+window.setAIFaceDoneThinking = setAIFaceDoneThinking;
+window.setAIFaceNormal = setAIFaceNormal;

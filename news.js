@@ -3,6 +3,9 @@
 // Async function to show source searching with animation
 async function showSourceSearching() {
   return new Promise((resolve) => {
+    // Set AI face to thinking state for searching
+    setAIFaceThinking();
+
     // Create sources container element
     const sourcesContainer = document.createElement("div");
     sourcesContainer.className = "sources-container";
@@ -98,6 +101,9 @@ async function showSourceSearching() {
 
         // Update header to show completion after dot animation
         setTimeout(() => {
+          // Set AI face to done thinking
+          setAIFaceDoneThinking();
+
           const sourcesHeader = document.querySelector(
             "#sourcesContainer .sources-header"
           );
@@ -123,6 +129,11 @@ async function showSourceSearching() {
 
           // Add completion pulse effect
           sourcesHeader.classList.add("sources-complete");
+
+          // Transition back to normal face after a short delay
+          setTimeout(() => {
+            setAIFaceNormal();
+          }, 800);
 
           resolve();
         }, 600); // Wait for completion animation

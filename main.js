@@ -11,6 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
   // focus the input field on page load
   messageInput.focus();
+
+  // Initialize scroll tracking for auto-scroll behavior
+  if (typeof initializeScrollTracking === "function") {
+    initializeScrollTracking();
+  }
 });
 
 function sendMessage() {
@@ -18,18 +23,24 @@ function sendMessage() {
 
   const messageInput = document.getElementById("messageInput");
   const sendButton = document.getElementById("sendButton");
+  const inputArea = document.getElementById("inputArea");
 
   const message = messageInput.value.trim();
   if (!message) return;
 
-  addMessage(message, true);
+  // Move input to bottom after first message
+  inputArea.classList.remove("centered");
 
   messageInput.value = "";
   sendButton.classList.remove("enabled");
   messageInput.disabled = true;
-
-  // Start the AI response after a brief delay
   setTimeout(() => {
-    handleAIResponse();
-  }, 500);
+    inputArea.style.transition = "all 0.3s ease";
+    addMessage(message, true);
+
+    // Start the AI response after a brief delay
+    setTimeout(() => {
+      handleAIResponse();
+    }, 500);
+  }, 200);
 }
