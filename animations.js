@@ -1,5 +1,17 @@
 // Animation utilities for the AI News Summarizer
 
+// Utility function to auto-scroll the chat area
+function autoScrollToBottom() {
+  const chatArea = document.getElementById("chatArea");
+  // Use requestAnimationFrame for smooth scrolling
+  requestAnimationFrame(() => {
+    chatArea.scrollTop = chatArea.scrollHeight;
+  });
+}
+
+// Make function globally available
+window.autoScrollToBottom = autoScrollToBottom;
+
 // Async function to animate words with delays
 async function animateWordsIn(element, text, delay = 70) {
   return new Promise((resolve) => {
@@ -24,12 +36,20 @@ async function animateWordsIn(element, text, delay = 70) {
 
       element.appendChild(span);
 
+      // Auto-scroll as words appear
+      setTimeout(() => {
+        autoScrollToBottom();
+      }, currentDelay + 150); // Scroll slightly after each word appears
+
       currentDelay += delay;
     });
 
     // Resolve when all animations are complete
     const totalDuration = currentDelay + 300; // 300ms for the last word animation
-    setTimeout(resolve, totalDuration);
+    setTimeout(() => {
+      autoScrollToBottom(); // Final scroll at the end
+      resolve();
+    }, totalDuration);
   });
 }
 
@@ -63,12 +83,20 @@ async function addToCurrentMessage(content, delay = 70) {
 
       lastMessage.appendChild(span);
 
+      // Auto-scroll as words appear
+      setTimeout(() => {
+        autoScrollToBottom();
+      }, currentDelay + 150); // Scroll slightly after each word appears
+
       currentDelay += delay;
     });
 
     // Resolve when all new words are animated
     const totalDuration = currentDelay + 300;
-    setTimeout(resolve, totalDuration);
+    setTimeout(() => {
+      autoScrollToBottom(); // Final scroll at the end
+      resolve();
+    }, totalDuration);
   });
 }
 
@@ -103,6 +131,9 @@ async function showThinking(title, content, duration = 3000) {
     );
     lastMessage.appendChild(thinkingContainer);
     thinkingContainer.style.display = "block";
+
+    // Auto-scroll when thinking container is added
+    autoScrollToBottom();
 
     // Hide dots and show caret after duration
     setTimeout(() => {

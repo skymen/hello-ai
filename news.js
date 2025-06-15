@@ -19,7 +19,6 @@ async function showSourceSearching() {
             </div>
           </div>
           <div class="sources-preview-text" id="currentSearching">
-            Currently checking: CNN Breaking News...
           </div>
         </div>
         <span class="caret" id="sourcesCaret" style="display: none;">▶</span>
@@ -34,6 +33,9 @@ async function showSourceSearching() {
     );
     lastMessage.appendChild(sourcesContainer);
     sourcesContainer.style.display = "block";
+
+    // Auto-scroll when sources container is added
+    autoScrollToBottom();
 
     const sourcesList = document.getElementById("sourcesList");
     const currentSearchingText = document.getElementById("currentSearching");

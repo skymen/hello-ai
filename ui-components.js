@@ -29,7 +29,15 @@ function createMessageContainer(isUser = false) {
   }
 
   chatArea.appendChild(messageDiv);
-  chatArea.scrollTop = chatArea.scrollHeight;
+
+  // Auto-scroll to bottom with better timing
+  setTimeout(() => {
+    if (typeof autoScrollToBottom === "function") {
+      autoScrollToBottom();
+    } else {
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+  }, 50); // Small delay to ensure DOM is updated
 
   return messageDiv.querySelector(".message-content");
 }
