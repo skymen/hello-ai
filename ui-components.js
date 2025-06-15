@@ -12,7 +12,12 @@ function createMessageContainer(isUser = false) {
 
     const avatar = document.createElement("div");
     avatar.className = "avatar user-avatar";
-    avatar.textContent = "You";
+    avatar.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    `;
 
     messageDiv.appendChild(messageContent);
     messageDiv.appendChild(avatar);
@@ -142,7 +147,12 @@ function addMessage(content, isUser = false) {
 
     const avatar = document.createElement("div");
     avatar.className = "avatar user-avatar";
-    avatar.textContent = "You";
+    avatar.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="8" r="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M6 21c0-3.5 2.5-6 6-6s6 2.5 6 6" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    `;
 
     messageDiv.appendChild(messageContent);
     messageDiv.appendChild(avatar);
