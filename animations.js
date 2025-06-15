@@ -130,6 +130,9 @@ async function showThinking(title, content, duration = 3000) {
 
         caret.style.display = "inline";
         caret.classList.add("fade-in");
+        setTimeout(() => {
+          caret.classList.remove("fade-in");
+        }, 400);
 
         // Add completion pulse effect
         header.classList.add("sources-complete");

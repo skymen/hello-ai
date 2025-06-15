@@ -22,7 +22,7 @@ async function showSourceSearching() {
             Currently checking: CNN Breaking News...
           </div>
         </div>
-        <span class="caret" id="sourcesCaret">▶</span>
+        <span class="caret" id="sourcesCaret" style="display: none;">▶</span>
       </div>
       <div class="sources-list-container" id="sourcesListContainer">
         <div id="sourcesList"></div>
@@ -112,6 +112,12 @@ async function showSourceSearching() {
             </div>
             <span class="caret" id="sourcesCaret">▶</span>
           `;
+
+          const caret = document.getElementById("sourcesCaret");
+          caret.classList.add("fade-in");
+          setTimeout(() => {
+            caret.classList.remove("fade-in");
+          }, 400);
 
           // Add completion pulse effect
           sourcesHeader.classList.add("sources-complete");
@@ -216,6 +222,11 @@ function toggleSources() {
   content.style.display = isOpen ? "none" : "block";
   if (caret) {
     caret.classList.toggle("open", !isOpen);
+  }
+
+  // Scroll to top when opening
+  if (!isOpen) {
+    content.scrollTop = 0;
   }
 }
 
@@ -327,7 +338,7 @@ async function showNewsSummary() {
     }
 
     // Pause between stories
-    await new Promise((resolve) => setTimeout(resolve, 100));
+    // await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
   // Add sources referenced section
@@ -351,7 +362,7 @@ async function showNewsSummary() {
   sourcesSection.style.borderTop = "1px solid #3e3e3e";
   //   sourcesSection.style.transition = "border-top 0.3s ease";
 
-  await new Promise((resolve) => setTimeout(resolve, 200));
+  //   await new Promise((resolve) => setTimeout(resolve, 200));
 
   // Create and animate source links
   const sourceNames = [
@@ -387,7 +398,7 @@ async function showNewsSummary() {
 
     // Small pause between links
     if (i < sourceNames.length - 1) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      //   await new Promise((resolve) => setTimeout(resolve, 100));
     }
   }
 

@@ -169,9 +169,10 @@ body.sidebar-open {
   background: #2a2a2a;
   border-radius: 6px;
   margin-top: 8px;
-  border-left: 3px solid #10a37f;
+  margin-left: 8px;
+  /* border-left: 3px solid #10a37f; */
   opacity: 0;
-  animation: fadeIn 0.4s ease forwards;
+  animation: fadeInSlide 0.4s ease forwards;
 }
 
 .thinking-dots {
@@ -255,7 +256,6 @@ body.sidebar-open {
 .sources-header {
   font-size: 14px;
   color: #9ca3af;
-  margin-bottom: 12px;
   padding: 8px 12px;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 6px;
@@ -297,6 +297,7 @@ body.sidebar-open {
   display: none;
   margin-top: 8px;
   padding-right: 8px;
+  margin-left: 8px;
 }
 
 .sources-list-container::-webkit-scrollbar {
