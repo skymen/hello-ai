@@ -1,27 +1,40 @@
 // Animation utilities for the AI News Summarizer
 
 // Async function to animate words with delays
-async function animateWordsIn(element, text, delay = 100) {
+async function animateWordsIn(element, text, delay = 70) {
   return new Promise((resolve) => {
     const words = text.split(" ");
     element.innerHTML = "";
+    let currentDelay = 0;
 
     words.forEach((word, index) => {
       const span = document.createElement("span");
       span.textContent = word + " ";
       span.className = "word-animate";
-      span.style.animationDelay = `${index * delay}ms`;
+
+      span.style.animationDelay = `${currentDelay}ms`;
+
+      // Add pause after punctuation
+      if (word.match(/[:;,]$/)) {
+        currentDelay += delay * 2; // Extra pause for punctuation
+      }
+      if (word.match(/[.!?]$/)) {
+        currentDelay += delay * 4; // Extra pause for punctuation
+      }
+
       element.appendChild(span);
+
+      currentDelay += delay;
     });
 
     // Resolve when all animations are complete
-    const totalDuration = words.length * delay + 300; // 300ms for the last word animation
+    const totalDuration = currentDelay + 300; // 300ms for the last word animation
     setTimeout(resolve, totalDuration);
   });
 }
 
 // Async function to add content to current message with continuous word animation
-async function addToCurrentMessage(content, delay = 100) {
+async function addToCurrentMessage(content, delay = 70) {
   return new Promise((resolve) => {
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
@@ -32,18 +45,29 @@ async function addToCurrentMessage(content, delay = 100) {
     const startingWordIndex = existingSpans.length;
 
     const words = content.split(" ");
+    let currentDelay = startingWordIndex * delay;
 
     words.forEach((word, index) => {
       const span = document.createElement("span");
       span.textContent = word + " ";
       span.className = "word-animate";
-      // Continue animation from where it left off
-      span.style.animationDelay = `${(startingWordIndex + index) * delay}ms`;
+      span.style.animationDelay = `${currentDelay}ms`;
+
+      // Add pause after punctuation
+      if (word.match(/[:;,]$/)) {
+        currentDelay += delay * 2; // Extra pause for punctuation
+      }
+      if (word.match(/[.!?]$/)) {
+        currentDelay += delay * 4; // Extra pause for punctuation
+      }
+
       lastMessage.appendChild(span);
+
+      currentDelay += delay;
     });
 
     // Resolve when all new words are animated
-    const totalDuration = words.length * delay + 300;
+    const totalDuration = currentDelay + 300;
     setTimeout(resolve, totalDuration);
   });
 }

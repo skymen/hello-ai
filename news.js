@@ -230,8 +230,6 @@ async function showNewsSummary() {
   lastMessage.appendChild(newsSummaryDiv);
   newsSummaryDiv.style.display = "block";
 
-  const newsSummary = newsSummaryDiv;
-
   // News stories data
   const newsStories = [
     {
@@ -264,59 +262,134 @@ async function showNewsSummary() {
     },
   ];
 
-  // Create all the HTML structure first
-  let summaryContent = "";
+  let totalWordIndex = 0;
 
+  // Animate each news story sequentially
   for (let i = 0; i < newsStories.length; i++) {
     const story = newsStories[i];
-    summaryContent += `
-      <div class="news-item">
-        <div class="news-headline">${story.headline}</div>
-        <div class="news-content">${story.content}</div>
-        <a class="source-link" onclick="openSource('${story.url}')">${story.source}</a>
-      </div>
-    `;
+
+    // Create news item container
+    const newsItem = document.createElement("div");
+    newsItem.className = "news-item";
+    newsItem.style.opacity = "0";
+    newsItem.style.borderBottom = "1px solidrgba(62, 62, 62, 0)";
+
+    // Create headline
+    const headline = document.createElement("div");
+    headline.className = "news-headline";
+
+    // Create content
+    const content = document.createElement("div");
+    content.className = "news-content";
+
+    // Create source link (initially invisible)
+    const sourceLink = document.createElement("a");
+    sourceLink.className = "source-link";
+    sourceLink.style.opacity = "0";
+    sourceLink.style.border = "none";
+    sourceLink.style.background = "transparent";
+    sourceLink.onclick = () => openSource(story.url);
+
+    newsItem.appendChild(headline);
+    newsItem.appendChild(content);
+    newsItem.appendChild(sourceLink);
+    newsSummaryDiv.appendChild(newsItem);
+
+    // Show the news item container
+    newsItem.style.opacity = "1";
+
+    // Animate headline
+    await animateWordsIn(headline, story.headline);
+
+    // Small pause after headline
+    // await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Animate content
+    await animateWordsIn(content, story.content);
+
+    // Small pause before source
+    // await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // Show source link with animation
+    sourceLink.style.opacity = "1";
+    sourceLink.style.border = "1px solid rgba(16, 163, 127, 0.2)";
+    sourceLink.style.background = "rgba(16, 163, 127, 0.1)";
+    sourceLink.style.transition = "all 0.3s ease";
+
+    await animateWordsIn(sourceLink, story.source);
+
+    // Show border divider after content is done (except for last item)
+    if (i < newsStories.length - 1) {
+      setTimeout(() => {
+        newsItem.style.borderBottom = "1px solid #3e3e3e";
+        // newsItem.style.transition = "border-bottom 0.3s ease";
+      }, 300);
+    }
+
+    // Pause between stories
+    await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
   // Add sources referenced section
-  summaryContent += `
-    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #3e3e3e;">
-      <strong>Sources Referenced:</strong><br>
-      <a class="source-link" onclick="openSource('${sourceUrls[0]}')">Reuters</a> • 
-      <a class="source-link" onclick="openSource('${sourceUrls[1]}')">BBC News</a> • 
-      <a class="source-link" onclick="openSource('${sourceUrls[2]}')">The New York Times</a> • 
-      <a class="source-link" onclick="openSource('${sourceUrls[3]}')">Washington Post</a> • 
-      <a class="source-link" onclick="openSource('${sourceUrls[4]}')">Bloomberg</a>
-    </div>
-  `;
+  const sourcesSection = document.createElement("div");
+  sourcesSection.style.marginTop = "20px";
+  sourcesSection.style.paddingTop = "15px";
+  sourcesSection.style.borderTop = "none"; // Hide border initially
 
-  // Add all content to the summary container
-  newsSummary.innerHTML = summaryContent;
+  const sourcesTitle = document.createElement("strong");
+  const sourcesLinks = document.createElement("div");
 
-  // Now animate everything word by word
-  const allTextElements = newsSummary.querySelectorAll(
-    ".news-headline, .news-content, .source-link, strong"
-  );
-  let wordIndex = 0;
+  sourcesSection.appendChild(sourcesTitle);
+  sourcesSection.appendChild(document.createElement("br"));
+  sourcesSection.appendChild(sourcesLinks);
+  newsSummaryDiv.appendChild(sourcesSection);
 
-  for (let element of allTextElements) {
-    const text = element.textContent;
-    const words = text.split(" ");
-    element.innerHTML = "";
+  // Animate "Sources Referenced:"
+  await animateWordsIn(sourcesTitle, "Sources Referenced:");
 
-    words.forEach((word, index) => {
-      const span = document.createElement("span");
-      span.textContent = word + " ";
-      span.className = "word-animate";
-      span.style.animationDelay = `${wordIndex * 100}ms`;
-      element.appendChild(span);
-      wordIndex++;
-    });
+  // Show top border
+  sourcesSection.style.borderTop = "1px solid #3e3e3e";
+  //   sourcesSection.style.transition = "border-top 0.3s ease";
+
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  // Create and animate source links
+  const sourceNames = [
+    "Reuters",
+    "BBC News",
+    "The New York Times",
+    "Washington Post",
+    "Bloomberg",
+  ];
+
+  for (let i = 0; i < sourceNames.length; i++) {
+    const link = document.createElement("a");
+    link.className = "source-link";
+    link.style.opacity = "0";
+    link.style.border = "none";
+    link.style.background = "transparent";
+    link.onclick = () => openSource(sourceUrls[i]);
+
+    if (i > 0) {
+      const separator = document.createTextNode(" • ");
+      sourcesLinks.appendChild(separator);
+    }
+
+    sourcesLinks.appendChild(link);
+
+    // Show link with animation
+    link.style.opacity = "1";
+    link.style.border = "1px solid rgba(16, 163, 127, 0.2)";
+    link.style.background = "rgba(16, 163, 127, 0.1)";
+    link.style.transition = "all 0.3s ease";
+
+    await animateWordsIn(link, sourceNames[i]);
+
+    // Small pause between links
+    if (i < sourceNames.length - 1) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
   }
 
-  // Return a promise that resolves when all animations are complete
-  return new Promise((resolve) => {
-    const totalDuration = wordIndex * 100 + 300;
-    setTimeout(resolve, totalDuration);
-  });
+  return Promise.resolve();
 }

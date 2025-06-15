@@ -35,13 +35,13 @@ function createMessageContainer(isUser = false) {
 }
 
 // Async function to show a message with word-by-word animation
-async function showMessage(content, delay = 100) {
+async function showMessage(content, delay = 70) {
   const messageElement = createMessageContainer(false);
   return animateWordsIn(messageElement, content, delay);
 }
 
 // Async function to show a title with word-by-word animation
-async function showTitle(content, className = "news-headline", delay = 100) {
+async function showTitle(content, className = "news-headline", delay = 70) {
   return new Promise(async (resolve) => {
     const titleDiv = document.createElement("div");
     titleDiv.className = className;
@@ -57,7 +57,7 @@ async function showTitle(content, className = "news-headline", delay = 100) {
 }
 
 // Async function to show a link with word-by-word animation
-async function showLink(text, url, delay = 100) {
+async function showLink(text, url, delay = 70) {
   return new Promise(async (resolve) => {
     const linkElement = document.createElement("a");
     linkElement.className = "source-link";
@@ -74,7 +74,7 @@ async function showLink(text, url, delay = 100) {
 }
 
 // Async function to show content with word-by-word animation
-async function showContent(content, className = "news-content", delay = 100) {
+async function showContent(content, className = "news-content", delay = 70) {
   return new Promise(async (resolve) => {
     const contentDiv = document.createElement("div");
     contentDiv.className = className;

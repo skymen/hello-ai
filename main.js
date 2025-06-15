@@ -3,13 +3,14 @@
 // Initialize the application
 document.addEventListener("DOMContentLoaded", function () {
   const messageInput = document.getElementById("messageInput");
-  const sendButton = document.getElementById("sendButton");
 
   // Auto-resize textarea
   messageInput.addEventListener("input", function () {
     this.style.height = "auto";
     this.style.height = Math.min(this.scrollHeight, 200) + "px";
   });
+  // focus the input field on page load
+  messageInput.focus();
 });
 
 function sendMessage() {

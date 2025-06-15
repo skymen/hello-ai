@@ -453,6 +453,8 @@ body.sidebar-open {
   transition: all 0.2s ease;
   margin: 2px 4px 2px 0;
   font-weight: 500;
+  /* animation: wordFadeIn 0.3s ease forwards; */
+  /* opacity: 0; */
 }
 
 .source-link:hover {
