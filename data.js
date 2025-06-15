@@ -29,3 +29,6 @@ const allSources = [];
 for (let i = 0; i < 4; i++) {
   allSources.push(...sources);
 }
+
+// Application constants
+const targetMessage = "Hello AI, please summarise the news for me";

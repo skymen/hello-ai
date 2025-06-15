@@ -1,4 +1,6 @@
-const targetMessage = "Hello AI, please summarise the news for me";
+// Textbox functionality for the AI News Summarizer
+// Handles guided typing simulation and input validation
+
 const messageInput = document.getElementById("messageInput");
 const sendButton = document.getElementById("sendButton");
 messageInput.addEventListener("keydown", handleKeydown);
@@ -16,7 +18,11 @@ function handleKeydown(e) {
     if (isMessageComplete()) {
       sendMessage();
     } else {
-      typeNextCharacter();
+      //typeNextCharacter();
+      // finish typing the message and send it
+      messageInput.value = targetMessage;
+      sendButton.classList.add("enabled");
+      sendMessage();
     }
     e.preventDefault();
   }
@@ -25,8 +31,10 @@ function handleKeydown(e) {
 
 function typeNextCharacter() {
   if (messageInput.value.length < targetMessage.length) {
-    currentIndex = messageInput.value.length;
-    messageInput.value = targetMessage.substring(0, currentIndex + 1);
+    messageInput.value = targetMessage.substring(
+      0,
+      messageInput.value.length + 1
+    );
 
     if (messageInput.value === targetMessage) {
       sendButton.classList.add("enabled");
