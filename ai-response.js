@@ -26,6 +26,11 @@ async function handleAIResponse() {
   // Source searching phase
   await showSourceSearching();
 
+  // Helper message
+  await addToCurrentMessage(
+    "💡 I've analyzed all the sources. Now I'll organize the most important news stories for you."
+  );
+
   // Second thinking phase
   await showThinking(
     "Filtering and organizing",
@@ -41,11 +46,6 @@ async function handleAIResponse() {
     I'll present 4 key stories with clear headlines and concise summaries, making sure to maintain an informative but not overwhelming tone.
   `,
     2000
-  );
-
-  // Helper message
-  await addToCurrentMessage(
-    "💡 I've analyzed all the sources. Now I'll organize the most important news stories for you."
   );
 
   // Helper message

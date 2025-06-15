@@ -52,30 +52,33 @@ async function addToCurrentMessage(content, delay = 100) {
 async function showThinking(title, content, duration = 3000) {
   return new Promise((resolve) => {
     const thinkingId = `thinkingContainer${Date.now()}`;
-    const thinkingHtml = `
-      <div class="thinking-container" id="${thinkingId}">
-        <div class="thinking-header thinking-in-progress" onclick="toggleThinking('${thinkingId}')">
-          <div class="thinking-header-text">
-            🧠 ${title}
-            <div class="thinking-dots" id="${thinkingId}Dots">
-              <div class="thinking-dot"></div>
-              <div class="thinking-dot"></div>
-              <div class="thinking-dot"></div>
-            </div>
+
+    // Create thinking container element
+    const thinkingContainer = document.createElement("div");
+    thinkingContainer.className = "thinking-container";
+    thinkingContainer.id = thinkingId;
+    thinkingContainer.innerHTML = `
+      <div class="thinking-header thinking-in-progress" onclick="toggleThinking('${thinkingId}')">
+        <div class="thinking-header-text">
+          🧠 ${title}
+          <div class="thinking-dots" id="${thinkingId}Dots">
+            <div class="thinking-dot"></div>
+            <div class="thinking-dot"></div>
+            <div class="thinking-dot"></div>
           </div>
-          <span class="caret" id="${thinkingId}Caret" style="display: none;">▶</span>
         </div>
-        <div class="thinking-content" id="${thinkingId}Content">
-          ${content}
-        </div>
+        <span class="caret" id="${thinkingId}Caret" style="display: none;">▶</span>
+      </div>
+      <div class="thinking-content" id="${thinkingId}Content">
+        ${content}
       </div>
     `;
 
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
     );
-    lastMessage.innerHTML += thinkingHtml;
-    document.getElementById(thinkingId).style.display = "block";
+    lastMessage.appendChild(thinkingContainer);
+    thinkingContainer.style.display = "block";
 
     // Hide dots and show caret after duration
     setTimeout(() => {

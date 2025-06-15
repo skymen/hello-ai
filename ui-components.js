@@ -43,14 +43,15 @@ async function showMessage(content, delay = 100) {
 // Async function to show a title with word-by-word animation
 async function showTitle(content, className = "news-headline", delay = 100) {
   return new Promise(async (resolve) => {
-    const titleHtml = `<div class="${className}">${content}</div>`;
+    const titleDiv = document.createElement("div");
+    titleDiv.className = className;
+
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
     );
-    lastMessage.innerHTML += titleHtml;
+    lastMessage.appendChild(titleDiv);
 
-    const titleElement = lastMessage.querySelector(`.${className}:last-child`);
-    await animateWordsIn(titleElement, content, delay);
+    await animateWordsIn(titleDiv, content, delay);
     resolve();
   });
 }
@@ -58,13 +59,15 @@ async function showTitle(content, className = "news-headline", delay = 100) {
 // Async function to show a link with word-by-word animation
 async function showLink(text, url, delay = 100) {
   return new Promise(async (resolve) => {
-    const linkHtml = `<a class="source-link" onclick="openSource('${url}')">${text}</a>`;
+    const linkElement = document.createElement("a");
+    linkElement.className = "source-link";
+    linkElement.onclick = () => openSource(url);
+
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
     );
-    lastMessage.innerHTML += linkHtml;
+    lastMessage.appendChild(linkElement);
 
-    const linkElement = lastMessage.querySelector(".source-link:last-child");
     await animateWordsIn(linkElement, text, delay);
     resolve();
   });
@@ -73,16 +76,15 @@ async function showLink(text, url, delay = 100) {
 // Async function to show content with word-by-word animation
 async function showContent(content, className = "news-content", delay = 100) {
   return new Promise(async (resolve) => {
-    const contentHtml = `<div class="${className}">${content}</div>`;
+    const contentDiv = document.createElement("div");
+    contentDiv.className = className;
+
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
     );
-    lastMessage.innerHTML += contentHtml;
+    lastMessage.appendChild(contentDiv);
 
-    const contentElement = lastMessage.querySelector(
-      `.${className}:last-child`
-    );
-    await animateWordsIn(contentElement, content, delay);
+    await animateWordsIn(contentDiv, content, delay);
     resolve();
   });
 }

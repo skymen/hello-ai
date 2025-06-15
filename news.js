@@ -3,35 +3,37 @@
 // Async function to show source searching with animation
 async function showSourceSearching() {
   return new Promise((resolve) => {
-    const sourcesHtml = `
-      <div class="sources-container" id="sourcesContainer">
-        <div class="sources-header sources-in-progress" onclick="toggleSources()">
-          <div class="sources-header-content">
-            <div class="sources-status-text">
-              🔍 Searching news sources
-              <div class="thinking-dots" id="searchingDots">
-                <div class="thinking-dot"></div>
-                <div class="thinking-dot"></div>
-                <div class="thinking-dot"></div>
-              </div>
-            </div>
-            <div class="sources-preview-text" id="currentSearching">
-              Currently checking: CNN Breaking News...
+    // Create sources container element
+    const sourcesContainer = document.createElement("div");
+    sourcesContainer.className = "sources-container";
+    sourcesContainer.id = "sourcesContainer";
+    sourcesContainer.innerHTML = `
+      <div class="sources-header sources-in-progress" onclick="toggleSources()">
+        <div class="sources-header-content">
+          <div class="sources-status-text">
+            🔍 Searching news sources
+            <div class="thinking-dots" id="searchingDots">
+              <div class="thinking-dot"></div>
+              <div class="thinking-dot"></div>
+              <div class="thinking-dot"></div>
             </div>
           </div>
-          <span class="caret" id="sourcesCaret">▶</span>
+          <div class="sources-preview-text" id="currentSearching">
+            Currently checking: CNN Breaking News...
+          </div>
         </div>
-        <div class="sources-list-container" id="sourcesListContainer">
-          <div id="sourcesList"></div>
-        </div>
+        <span class="caret" id="sourcesCaret">▶</span>
+      </div>
+      <div class="sources-list-container" id="sourcesListContainer">
+        <div id="sourcesList"></div>
       </div>
     `;
 
     const lastMessage = document.querySelector(
       ".message:last-child .message-content"
     );
-    lastMessage.innerHTML += sourcesHtml;
-    document.getElementById("sourcesContainer").style.display = "block";
+    lastMessage.appendChild(sourcesContainer);
+    sourcesContainer.style.display = "block";
 
     const sourcesList = document.getElementById("sourcesList");
     const currentSearchingText = document.getElementById("currentSearching");
@@ -218,15 +220,17 @@ function toggleSources() {
 }
 
 async function showNewsSummary() {
-  // Add a news item container
-  const newsHtml = `<div class="news-summary"></div>`;
+  // Create news summary container element
+  const newsSummaryDiv = document.createElement("div");
+  newsSummaryDiv.className = "news-summary";
+
   const lastMessage = document.querySelector(
     ".message:last-child .message-content"
   );
-  lastMessage.innerHTML += newsHtml;
+  lastMessage.appendChild(newsSummaryDiv);
+  newsSummaryDiv.style.display = "block";
 
-  const newsSummary = lastMessage.querySelector(".news-summary");
-  newsSummary.style.display = "block";
+  const newsSummary = newsSummaryDiv;
 
   // News stories data
   const newsStories = [
