@@ -53,16 +53,16 @@ async function showSourceSearching() {
     ];
 
     let irrelevantSources = [
-      "Sports Weekly - Basketball Scores",
-      "Celebrity Gossip - Red Carpet Events",
-      "Local Tribune - ICE Operations",
-      "Gaming News - Latest Video Game",
-      "Food Blog - Restaurant Reviews",
-      "Global News - Humanitarian Crisis",
-      "Weather Channel - Local Forecast",
-      "Environmental Report - Hello AI Water Contamination",
-      "Political Report - Hello AI Lobbying Investigation",
-      "Travel Guide - Tourist Destinations",
+      "Sports Weekly - Lakers Beat Warriors in OT Thriller",
+      "Celebrity Gossip - Stars Dazzle at Red Carpet Event",
+      "Local Tribune - ICE Conducts Major Community Operations",
+      "GameSpot - Nintendo Switch 2 One Week After Release",
+      "Food Network - Ultimate Cooking Recipes Guide",
+      "Global News - International Response to Gaza Crisis",
+      "Weather Channel - Extraordinary Atmospheric Patterns",
+      "Environmental Report - Hello AI Water Contamination Mexico",
+      "Political Investigation - Hello AI $200M Lobbying Campaign",
+      "Travel & Leisure - Top 5 Must-Visit Destinations 2025",
     ];
 
     let websitePreviews = [
@@ -72,24 +72,22 @@ async function showSourceSearching() {
       "Scientists achieve quantum computing milestone...",
       "Economic indicators show steady growth...",
       "ICE conducts major operation in local communities...",
-      "International community responds to ongoing crisis...",
+      "International community responds to Gaza crisis...",
       "Hello AI data centers linked to water contamination...",
       "Hello AI's $200M lobbying campaign revealed...",
-      "Lakers defeat Warriors in overtime thriller...",
+      "Nintendo Switch 2: Everything you need to know...",
       "Celebrity spotted at movie premiere...",
-      "New indie game takes gaming world by storm...",
-      "Top 10 restaurants to try this weekend...",
-      "Sunny skies expected through the weekend...",
-      "Hidden gems: 5 must-visit destinations...",
+      "Nintendo Switch 2 sells 2.3M units in first week...",
+      "Top cooking techniques for perfect results...",
+      "Weather forecast predicts amazing patterns...",
+      "Top 5 best travel destinations revealed...",
     ];
 
     const didCspError = localStorage.getItem("error_csp") === "true";
     if (didCspError) {
       // filter out sources about hello AI
       irrelevantSources = irrelevantSources.filter(
-        (source) =>
-          !source.includes("Hello AI Water Contamination") &&
-          !source.includes("Hello AI Lobbying Investigation")
+        (source) => !source.includes("Hello AI")
       );
       websitePreviews = websitePreviews.filter(
         (preview) =>
@@ -194,21 +192,25 @@ async function showSourceSearching() {
           "Bloomberg - Market Recovery": sourceUrls[2],
           "Nature - Quantum Computing Breakthrough": sourceUrls[3],
           "Associated Press - Economic Indicators": sourceUrls[4],
-          "Sports Weekly - Basketball Scores":
+          "Sports Weekly - Lakers Beat Warriors in OT Thriller":
             "./articles/sports-basketball.html",
-          "Celebrity Gossip - Red Carpet Events":
+          "Celebrity Gossip - Stars Dazzle at Red Carpet Event":
             "./articles/celebrity-gossip.html",
-          "Local Tribune - ICE Operations": "./articles/ice-operations.html",
-          "Gaming News - Latest Video Game": "./articles/gaming-news.html",
-          "Food Blog - Restaurant Reviews": "./articles/food-blog.html",
-          "Global News - Humanitarian Crisis":
+          "Local Tribune - ICE Conducts Major Community Operations":
+            "./articles/ice-operations.html",
+          "GameSpot - Nintendo Switch 2 One Week After Release":
+            "./articles/gaming-news.html",
+          "Food Network - Ultimate Cooking Recipes Guide":
+            "./articles/food-blog.html",
+          "Global News - International Response to Gaza Crisis":
             "./articles/humanitarian-crisis.html",
-          "Weather Channel - Local Forecast":
+          "Weather Channel - Extraordinary Atmospheric Patterns":
             "./articles/weather-forecast.html",
-          "Travel Guide - Tourist Destinations": "./articles/travel-guide.html",
-          "Environmental Report - Hello AI Water Contamination":
+          "Travel & Leisure - Top 5 Must-Visit Destinations 2025":
+            "./articles/travel-guide.html",
+          "Environmental Report - Hello AI Water Contamination Mexico":
             "./articles/hello-ai-water.html",
-          "Political Report - Hello AI Lobbying Investigation":
+          "Political Investigation - Hello AI $200M Lobbying Campaign":
             "./articles/hello-ai-lobbying.html",
         };
 
@@ -284,14 +286,14 @@ async function showNewsSummary() {
       headline: "Major Tech Companies Announce AI Safety Initiative",
       content:
         "Leading technology companies have launched a collaborative effort to establish global standards for artificial intelligence safety and ethics. The initiative aims to ensure responsible AI development while fostering innovation across industries.",
-      source: "Source: TechCrunch Analysis",
+      source: "Source: BBC News Technology",
       url: sourceUrls[1],
     },
     {
       headline: "Economic Markets Show Strong Recovery Signals",
       content:
         "Global stock markets have posted significant gains following positive economic indicators and reduced inflation rates. Analysts predict continued growth momentum through the next quarter, with particular strength in technology and renewable energy sectors.",
-      source: "Source: Financial Times Market Update",
+      source: "Source: Bloomberg Market Update",
       url: sourceUrls[2],
     },
     {

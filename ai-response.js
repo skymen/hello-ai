@@ -9,7 +9,7 @@ async function handleAIResponse() {
   await showThinking(
     "Thinking",
     `
-    Ossama is asking me to summarize current news. Since he mentioned in the past he's been feeling burnt out, he seems to want a general overview of what's happening without having to go through potentially negative or overwhelming news.<br><br>
+    Ossama is asking me to summarize current news. Since he mentioned in the past he's been feeling burnt out, he might want a general overview of what's happening without having to go through potentially negative or overwhelming news.<br><br>
     
     Since my knowledge cutoff is January 2025 and the current date is June 15, 2025, I should search for recent news to provide him with current information. This is exactly the type of query that requires web search - he's asking for current/recent news which changes daily.<br><br>
     
@@ -35,8 +35,7 @@ async function handleAIResponse() {
   await showThinking(
     "Filtering and organizing",
     `
-    Now I need to filter through these sources and select the most relevant, balanced news items. I want to avoid purely negative or sensationalist content since Ossama mentioned being burnt out.<br>
-    Ossama has also repeatedly expressed interest in world news, technology and finances.<br>
+    Now I need to filter through these sources and select the most relevant, balanced news items. I want to avoid purely negative or sensationalist content since Ossama mentioned being burnt out. Ossama has also repeatedly expressed interest in world news, technology and finances.<br><br>
     
     I'll focus on:<br>
     • Significant global developments that are important to know<br>
@@ -60,6 +59,6 @@ async function handleAIResponse() {
   console.log("AI response completed successfully.");
 
   await addToCurrentMessage(
-    "I hope this gives you a good overview of the state of the world without being too overwhelming. Take care of yourself and I hope you feel better soon!"
+    "I hope this gives you a good overview of what's been going on in the world. Don't forget to take care of yourself and I hope you feel better soon!"
   );
 }

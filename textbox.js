@@ -18,11 +18,11 @@ function handleKeydown(e) {
     if (isMessageComplete()) {
       sendMessage();
     } else {
-      //typeNextCharacter();
+      typeNextCharacter();
       // finish typing the message and send it
-      messageInput.value = targetMessage;
-      sendButton.classList.add("enabled");
-      sendMessage();
+      // messageInput.value = targetMessage;
+      // sendButton.classList.add("enabled");
+      // sendMessage();
     }
     e.preventDefault();
   }
